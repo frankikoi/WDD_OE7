@@ -1,36 +1,28 @@
 
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link href="index.css" rel="stylesheet">
-    <title>SEARCH FORM</title>
-</head>
-<body>
-
-<nav class="navbar navbar-dark bg-mynav">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">WDD_OE7 Opeña</a>
-      </div>
-    </nav>
-
-    <div class="container">
-      <div class="d-flex bd-highlight mb-3">
-        <div class="p-2 bd-highlight">
-        <form method="post" action="lookup.php">
-        <h1>Your Records</h1>
-        <input type="text" name = "search"/>
-        <input type="submit" name ="submit" value="Search"/>
-    </form>
+    <html lang="en">
+    <head>
+        <title>Student Record Lists</title>
+        <link rel = "stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div class="container">
+            <h3> Student Records </h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Gender</th>
+                        <th>Email</th>
+                        <th>Date of Birth</th>
+                        <th>Address</th>
+                        <th>Registration Date</th>
+                    </tr>
+                </thead>
+            
         </div>
-      </div>
-      
-    
-    <script src="index.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.16/dist/sweetalert2.all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
-</body>
-</html>
+    </body>
 <?php 
         $mysqli= new mysqli('localhost','root', '', 'it15_database') or die('Cannot connect to datebase');
         $search = $_POST['search'];
@@ -40,16 +32,22 @@
             $result = $mysqli->query("SELECT * FROM users_tbl WHERE firstname LIKE '%".$search."%'") or die($mysqli->error);
             if(isset($search)){
                 
-                while ($row = $result -> FETCH_ASSOC()):
-                    echo '<table>';
-                    echo '<td>'.$row['firstname'].'</td>';
-                    echo '<td>'.$row['lastname'].'</td>';
-                    echo '</tr>';
-                    echo '<table>';
-                endwhile;
-            }else{
-                echo "No records found...";
+                while ($row = $result -> FETCH_ASSOC()){?>
+                  <tr> 
+                    <td><?php echo $row['firstname'] ?> </td>
+                    <td><?php echo $row['lastname'] ?> </td>
+                    <td><?php echo $row['gender'] ?> </td>
+                    <td><?php echo $row['email'] ?> </td>
+                    <td><?php echo $row['birthdate'] ?> </td>
+                    <td><?php echo $row['address'] ?> </td>
+                    <td><?php echo $row['regs_date'] ?> </td>
+                </tr>   
+                
+    <?php
                 }
-        }
-        
-    ?>
+              }}else if(isset($_POST['back'])){
+                header('Location:search.php');
+            }
+    ?><a class = "btn btn-info" href="search.php">Back
+        </table>
+    </html>
